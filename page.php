@@ -56,7 +56,7 @@
                                 <form action="" method="post">
                                     <input type="hidden" name="id" value="<?php echo $event['id']; ?>">
                                     <input type="submit" name="action" value="Edit">
-                                    <input type="submit" name="action" onclick="return confirm('Händelsen kommer att raderas!');" value="Delete">
+                                    <input type="submit" name="action" onclick="return confirm('The event will be deleted!');" value="Delete">
                                 </form>
                             </td>
                         </tr>
