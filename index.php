@@ -2,6 +2,7 @@
 
 include_once 'inc/db.inc.php';
 include_once 'inc/FormatDateOutput.php';
+include_once 'inc/htmlout.inc.php';
 
 if (isset($_POST['action']) && $_POST['action'] == 'Save') {
 
@@ -11,27 +12,21 @@ if (isset($_POST['action']) && $_POST['action'] == 'Save') {
                       title = :title,
                 description = :description,
                   date_from = :date_from,
-                    date_to = :date_to,
-                  time_from = :time_from,
-                    time_to = :time_to 
+                    date_to = :date_to 
                    WHERE id = :id';
         } else {
             $sql = 'INSERT INTO calendar SET
                       title = :title,
                 description = :description,
                   date_from = :date_from,
-                    date_to = :date_to,
-                  time_from = :time_from,
-                    time_to = :time_to';
+                    date_to = :date_to';
         }
 
         $s = $pdo->prepare($sql);
         $s->bindValue(':title', $_POST['title']);
         $s->bindValue(':description', $_POST['description']);
-        $s->bindValue(':date_from', $_POST['date_from']);
-        $s->bindValue(':date_to', $_POST['date_to']);
-        $s->bindValue(':time_from', $_POST['time_from']);
-        $s->bindValue(':time_to', $_POST['time_to']);
+        $s->bindValue(':date_from', $_POST['date_from'] . ' ' . $_POST['time_from'] . ':00');
+        $s->bindValue(':date_to', $_POST['date_to'] . ' ' . $_POST['time_to'] . ':00');
 
         if (!empty($_POST['id'])) {
             $s->bindValue(':id', $_POST['id']);
@@ -83,10 +78,12 @@ if (isset($_POST['action']) && $_POST['action'] == 'Edit') {
     $id = $row['id']; 
     $title = $row['title'];
     $description = $row['description'];
-    $date_from = $row['date_from'];
-    $date_to = $row['date_to'];
-    $time_from = $row['time_from'];
-    $time_to = $row['time_to'];
+    $event_from = new DateTime($row['date_from']);
+    $event_to = new DateTime($row['date_to']);
+    $date_from = $event_from->format('Y-m-d');
+    $date_to = $event_to->format('Y-m-d');
+    $time_from = $event_from->format('H:i');
+    $time_to = $event_to->format('H:i');
 
 } else {
 
@@ -115,9 +112,8 @@ foreach ($result as $row) {
         'title' => $row['title'],
         'description' => $row['description'],
         'date_from' => $row['date_from'],
-        'date_to' => $row['date_to'],
-        'time_from' => $row['time_from'],
-        'time_to' => $row['time_to']);
+        'date_to' => $row['date_to']);
 }
 
 include 'page.php';
+

@@ -44,13 +44,13 @@
                     <?php foreach ($events as $event) : ?>
                         <tr>
                             <td>
-                                <?php echo $event['title']; ?>
+                                <?php htmlout($event['title']); ?>
                             </td>
                             <td>
-                                <?php $init = new FormatDateOutput($event['date_from'], $event['time_from']); ?>
+                                <?php $init = new FormatDateOutput($event['date_from']); ?>
                             </td>
                             <td>
-                                <?php $init = new FormatDateOutput($event['date_to'], $event['time_to']); ?>
+                                <?php $init = new FormatDateOutput($event['date_to']); ?>
                             </td>
                             <td>
                                 <form action="" method="post">
@@ -62,7 +62,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <?php echo $event['description']; ?>
+                                <?php htmlout($event['description']); ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>
